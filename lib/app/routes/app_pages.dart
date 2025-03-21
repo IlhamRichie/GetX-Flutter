@@ -32,7 +32,7 @@ class AppPages {
       binding: LoginBinding(),
     ),
     GetPage(
-      name: '${_Paths.RECIPE}/:id', // 🔥 Tambahkan `/:id` untuk menangkap ID
+      name: '${_Paths.RECIPE}/:id',
       page: () =>
           RecipeView(recipeId: int.tryParse(Get.parameters['id'] ?? '0') ?? 0),
       binding: RecipeBinding(),

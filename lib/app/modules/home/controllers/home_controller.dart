@@ -7,7 +7,7 @@ class HomeController extends GetxController {
   var recipes = [].obs;
   var isLoading = false.obs;
   final ApiServices _recipeServices = ApiServices();
-  final ApiServices authService = ApiServices(); // ✅ AuthService untuk logout
+  final ApiServices authService = ApiServices();
 
   @override
   void onInit() {
@@ -17,13 +17,17 @@ class HomeController extends GetxController {
 
   void fetchRecipes() async {
     isLoading.value = true;
-    var data = await _recipeServices.getAllRecipe();
-    recipes.value = data;
-    isLoading.value = false;
+    try {
+      var data = await _recipeServices.getAllRecipe();
+      recipes.value = data;
+    } catch (e) {
+      Get.snackbar("Error", "Failed to fetch recipes: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void confirmLogout() {
-    // 🔥 Fungsi untuk konfirmasi logout
     Get.defaultDialog(
       title: "Konfirmasi Logout",
       middleText: "Apakah Anda yakin ingin keluar?",
@@ -31,9 +35,8 @@ class HomeController extends GetxController {
       textConfirm: "Logout",
       confirmTextColor: Colors.white,
       onConfirm: () async {
-        await authService.logout(); // ✅ Panggil logout
-        Get.offAllNamed(
-            '/login'); // 🔥 Redirect ke halaman login setelah logout
+        await authService.logout();
+        Get.offAllNamed('/login');
       },
     );
   }

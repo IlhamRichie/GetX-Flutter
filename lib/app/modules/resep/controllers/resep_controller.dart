@@ -8,12 +8,17 @@ class RecipeController extends GetxController {
 
   void fetchRecipeById(int id) async {
     isLoading.value = true;
-    var data = await _recipeServices.getRecipeById(id);
-    if (data != null) {
-      recipeDetail.value = data;
-    } else {
-      Get.snackbar("Error", "Failed to load recipe details.");
+    try {
+      var data = await _recipeServices.getRecipeById(id);
+      if (data != null) {
+        recipeDetail.value = data;
+      } else {
+        Get.snackbar("Error", "Failed to load recipe details.");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Failed to load recipe details: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 }

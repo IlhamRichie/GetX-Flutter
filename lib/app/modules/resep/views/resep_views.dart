@@ -11,11 +11,15 @@ class RecipeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final RecipeController detailController = Get.put(RecipeController());
 
-    // 🔥 Panggil data berdasarkan ID dari URL
     detailController.fetchRecipeById(recipeId);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Detail Resep")),
+      appBar: AppBar(
+        title: const Text("Detail Resep"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
+      ),
       body: Obx(() {
         if (detailController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());

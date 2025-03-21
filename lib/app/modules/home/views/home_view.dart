@@ -12,14 +12,11 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Recipes"),
+        title: const Text("Semua Resep"),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              homeController
-                  .confirmLogout(); // 🔥 Tambahkan konfirmasi sebelum logout
-            },
+            onPressed: homeController.confirmLogout,
           ),
         ],
       ),
@@ -46,19 +43,17 @@ class HomeView extends StatelessWidget {
 
               return GestureDetector(
                 onTap: () {
-                  Get.to(() => RecipeView(
-                      recipeId: recipe['id'])); // 🔥 Navigasi ke DetailPage
+                  Get.to(() => RecipeView(recipeId: recipe['id']));
                 },
                 child: Card(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  elevation: 3, // Menambah efek shadow
+                  elevation: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Gambar Resep
                       ClipRRect(
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(12),
@@ -78,13 +73,11 @@ class HomeView extends StatelessWidget {
                           ),
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Judul Resep
                             Text(
                               recipe['title'] ?? 'No Title',
                               style: const TextStyle(
@@ -92,20 +85,14 @@ class HomeView extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-
                             const SizedBox(height: 4),
-
-                            // Deskripsi Resep
                             Text(
                               recipe['description'] ?? 'No Description',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(fontSize: 14),
                             ),
-
                             const SizedBox(height: 8),
-
-                            // Informasi Tambahan (Likes & Comments)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

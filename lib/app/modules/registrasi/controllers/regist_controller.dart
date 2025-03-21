@@ -3,30 +3,32 @@ import 'package:get/get.dart';
 import '../../../data/providers/api_services.dart';
 
 class RegisterController extends GetxController {
-  //TODO: Implement RegisterController
-  var isLoading = false.obs;
-  var isAuthenticated = false.obs;
-  ApiServices authService = ApiServices();
+  final RxBool isLoading = false.obs;
+  final RxBool isAuthenticated = false.obs;
+  final ApiServices authService = ApiServices();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Future<void> register(String name, String email, String password) async {
     isLoading.value = true;
 
-    bool success =
-        await authService.register(Get.context!, name, email, password);
+    try {
+      bool success = await authService.register(Get.context!, name, email, password);
 
-    isLoading.value = false;
-
-    if (success) {
-      Get.snackbar("Success", "Registrasi berhasil! Silakan login.");
-      Get.offAllNamed('/login');
-    } else {
-      Get.snackbar("Error", "Registrasi gagal, coba lagi nanti");
+      if (success) {
+        Get.snackbar("Success", "Registrasi berhasil! Silakan login.");
+        Get.offAllNamed('/login');
+      } else {
+        Get.snackbar("Error", "Registrasi gagal, coba lagi nanti");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Terjadi kesalahan: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -42,6 +44,10 @@ class RegisterController extends GetxController {
 
   @override
   void onClose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
     super.onClose();
   }
 }
